@@ -3,6 +3,7 @@ package com.example.queue.Queue.gateway.controller;
 import com.example.queue.Queue.domain.DTOs.CustomerDto;
 import com.example.queue.Queue.domain.DTOs.TodoDto;
 import com.example.queue.Queue.domain.DTOs.security.CustomerAuthenticatedDto;
+import com.example.queue.Queue.mapper.CustomerMapper;
 import com.example.queue.Queue.service.TodoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,16 +17,17 @@ import java.util.UUID;
 public class TodoController {
 
     private final TodoService service;
+    private final CustomerMapper mapper;
 
-    public TodoController(TodoService service) {
+    public TodoController(TodoService service, CustomerMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
+
     @PostMapping("/save")
     public ResponseEntity<TodoDto> save(@RequestBody TodoDto dto, Authentication authentication){
         CustomerAuthenticatedDto customerAuthenticatedDto = (CustomerAuthenticatedDto) authentication.getPrincipal();
-        CustomerDto customer = new CustomerDto();
-        customer.setId(UUID.fromString(customerAuthenticatedDto.getId()));
-        dto.setCustomer(customer);
+        dto.setCustomer(mapper.customerAuthToDto(customerAuthenticatedDto));
         return ResponseEntity.ok(service.save(dto));
     }
 
