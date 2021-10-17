@@ -32,16 +32,11 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token =  request.getHeader(securityConstants.HEADER_FIELD);
+//        String token =  request.getHeader(securityConstants.HEADER_FIELD);
 
-        if(token != null){
-            UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(request);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            chain.doFilter(request,response);
-            return;
-        }
-
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
+        UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(request);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        chain.doFilter(request,response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(HttpServletRequest request) throws JsonProcessingException {
