@@ -4,6 +4,7 @@ import com.example.queue.Queue.domain.DTOs.CustomerDto;
 import com.example.queue.Queue.domain.DTOs.TodoDto;
 import com.example.queue.Queue.domain.entities.Customer;
 import com.example.queue.Queue.domain.entities.Todo;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,6 +20,6 @@ public interface TodoMapper {
     List<TodoDto> convertToDtoList(Iterable<Todo> todos);
 
     @Mapping(target = "todos", ignore = true)
-    @Mapping(target = "password", ignore = true)
+    @BeanMapping(ignoreUnmappedSourceProperties = "password")
     CustomerDto customerToCustomerDto(Customer customer);
 }

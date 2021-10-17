@@ -35,6 +35,6 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy ="customer")
     private Set<Todo> todos = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     private Set<CustomerRole> customerRoles = new HashSet<>();
 }

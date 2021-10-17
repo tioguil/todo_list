@@ -1,6 +1,7 @@
 package com.example.queue.Queue.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,12 +19,10 @@ public class CustomerRole implements Serializable {
     @EmbeddedId
     private CustomerRoleId customerRoleId;
 
-    @GeneratedValue
-    private UUID id;
-
-    @ManyToOne
     @MapsId("roleId")
     @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JsonManagedReference
     private Role role;
 
     @ManyToOne

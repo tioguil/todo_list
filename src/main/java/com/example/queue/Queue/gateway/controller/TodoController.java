@@ -6,6 +6,7 @@ import com.example.queue.Queue.domain.DTOs.security.CustomerAuthenticatedDto;
 import com.example.queue.Queue.mapper.CustomerMapper;
 import com.example.queue.Queue.service.TodoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,12 @@ public class TodoController {
     public ResponseEntity<TodoDto> save(@RequestBody TodoDto dto, Authentication authentication){
         CustomerAuthenticatedDto customerAuthenticatedDto = (CustomerAuthenticatedDto) authentication.getPrincipal();
         dto.setCustomer(mapper.customerAuthToDto(customerAuthenticatedDto));
+        return ResponseEntity.ok(service.save(dto));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADM')")
+    @PostMapping("/register")
+    public ResponseEntity<TodoDto> register(@RequestBody TodoDto dto){
         return ResponseEntity.ok(service.save(dto));
     }
 

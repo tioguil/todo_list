@@ -20,6 +20,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
+    @Mapping(target = "password", ignore = true)
     CustomerDto convertToDto(Customer customer);
 
     @Mapping(target = "customer.todos", ignore = true)
@@ -29,7 +30,6 @@ public interface CustomerMapper {
 
     List<CustomerDto> convertToList(Iterable<Customer> customers);
 
-    @BeanMapping(ignoreUnmappedSourceProperties = "customerRoles")
     @Mapping(target = "customer.todos", ignore = true)
     TodoDto todoToTodoDto(Todo todo);
 
@@ -37,12 +37,10 @@ public interface CustomerMapper {
     @Mapping(source = "id", target = "id", qualifiedBy = ConvertStringToUUID.class)
     CustomerDto  customerAuthToDto(CustomerAuthenticatedDto authenticatedDto);
 
-
     @ConvertStringToUUID
     public static UUID convertStringToUUID(String id) {
         return UUID.fromString(id);
     }
-
 
     @Qualifier
     @Target(ElementType.METHOD)

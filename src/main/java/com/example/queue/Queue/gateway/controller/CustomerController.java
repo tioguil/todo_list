@@ -20,7 +20,6 @@ public class CustomerController {
 
     @PostMapping(path = "/save")
     public ResponseEntity<CustomerDto> save(@RequestBody CustomerDto dto){
-        System.out.println(dto.getName());
         return ResponseEntity.ok(service.save(dto));
     }
 
