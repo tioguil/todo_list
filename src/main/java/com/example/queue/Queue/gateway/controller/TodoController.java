@@ -36,4 +36,11 @@ public class TodoController {
         CustomerAuthenticatedDto dto = (CustomerAuthenticatedDto) authentication.getPrincipal();
         return ResponseEntity.ok(service.findAll(dto.getId()));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<TodoDto> update(@RequestBody TodoDto dto, Authentication authentication){
+        CustomerAuthenticatedDto customerAuthenticatedDto = (CustomerAuthenticatedDto) authentication.getPrincipal();
+        dto.setCustomer(mapper.customerAuthToDto(customerAuthenticatedDto));
+        return ResponseEntity.ok(service.update(dto));
+    }
 }

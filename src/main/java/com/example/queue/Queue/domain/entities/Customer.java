@@ -33,6 +33,8 @@ public class Customer implements Serializable {
 
     @JsonBackReference
     @OneToMany(mappedBy ="customer")
-    private Set<Todo> todos;
+    private Set<Todo> todos = new HashSet<>();
 
+    @OneToMany(mappedBy = "customer")
+    private Set<CustomerRole> customerRoles = new HashSet<>();
 }

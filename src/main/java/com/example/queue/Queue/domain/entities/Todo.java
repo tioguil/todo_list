@@ -24,7 +24,7 @@ public class Todo implements Serializable {
     private UUID id;
     private String name;
     private String description;
-    private LocalDate todoDate;
+    private LocalDateTime todoDate;
     private boolean finished;
 
     @ManyToOne(cascade = CascadeType.REFRESH)

@@ -29,6 +29,7 @@ public interface CustomerMapper {
 
     List<CustomerDto> convertToList(Iterable<Customer> customers);
 
+    @BeanMapping(ignoreUnmappedSourceProperties = "customerRoles")
     @Mapping(target = "customer.todos", ignore = true)
     TodoDto todoToTodoDto(Todo todo);
 

@@ -1,14 +1,20 @@
 package com.example.queue.Queue.service.security;
 
 import com.example.queue.Queue.domain.DTOs.security.CustomerSecurityDto;
+import com.example.queue.Queue.domain.entities.CustomerRole;
 import com.example.queue.Queue.gateway.repository.CustomerRepository;
+import org.springframework.security.authentication.jaas.AuthorityGranter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +28,7 @@ public class CustomerSecurityService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         var customerOptional = repository.findCustomerByEmail(email);
@@ -31,9 +38,11 @@ public class CustomerSecurityService implements UserDetailsService {
 
         var customer = customerOptional.get();
 
-        System.out.println(customer.getPassword());
+        List<GrantedAuthority> authorityList = new ArrayList<>();
 
-        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("ROLE_USER");
+        for(CustomerRole role : customer.getCustomerRoles()){
+            authorityList.add(new SimpleGrantedAuthority(role.getRole().getName()));
+        }
 
         return new CustomerSecurityDto(
                 customer.getId().toString(),
